@@ -12,18 +12,18 @@ Language: **Ada 2023** (ISO/IEC 8652:2023), compiled with GNAT (`-gnat2022`).
 
 Part of the **RobertBoettcherSF** Ada algorithm series. Sibling:
 [Ada-Single-Linkage-Clustering](../ada-single-linkage-clustering/)
-(\(D=\min\) / nearest neighbour).
+($D=\min$ / nearest neighbour).
 
 ## Project Overview
 
 | Concern | Approach | Notes |
 | --- | --- | --- |
-| **Linkage** | \(D(X,Y)=\max_{x\in X,\,y\in Y} d(x,y)\) | Max pairwise (complete / farthest) |
+| **Linkage** | $D(X,Y)=\max_{x\in X,\,y\in Y} d(x,y)$ | Max pairwise (complete / farthest) |
 | **Input** | Points (Euclidean L2) **or** proximity matrix | `Build_Distance_Matrix` |
-| **Algorithm** | Naive proximity-matrix agglomeration | Wikipedia steps; \(O(n^3)\) |
-| **Dendrogram** | \(N-1\) merges `(Left, Right, Height, Size)` | Leaves `1..N`; merge \(m\) → id \(N+m\) |
-| **Flat cut** | By \(K\) clusters **or** height threshold | `Cut_Dendrogram` / `Labels_At_Height` |
-| **Complexity** | Naive \(O(n^3)\); CLINK \(O(n^2)\) known | Educational; \(n\le 64\) |
+| **Algorithm** | Naive proximity-matrix agglomeration | Wikipedia steps; $O(n^3)$ |
+| **Dendrogram** | $N-1$ merges `(Left, Right, Height, Size)` | Leaves `1..N`; merge $m$ → id $N+m$ |
+| **Flat cut** | By $K$ clusters **or** height threshold | `Cut_Dendrogram` / `Labels_At_Height` |
+| **Complexity** | Naive $O(n^3)$; CLINK $O(n^2)$ known | Educational; $n\le 64$ |
 
 ## Formula
 
@@ -38,28 +38,28 @@ d[(r,s),(k)] = \max \{ d[(k),(r)], \, d[(k),(s)] \}.
 $$
 ## Naive algorithm (corrected merge choice)
 
-1. Start with \(N\) singleton clusters, \(L(0)=0\), \(m=0\); build the
+1. Start with $N$ singleton clusters, $L(0)=0$, $m=0$; build the
    proximity matrix of pairwise distances.
-2. Find the most similar pair \((r),(s)\) — the pair with the **smallest**
-   complete-linkage distance \(D\) in the current matrix.
+2. Find the most similar pair $(r),(s)$ — the pair with the **smallest**
+   complete-linkage distance $D$ in the current matrix.
    (**Note:** Wikipedia’s naive step text incorrectly writes
-   \(d[(r),(s)]=\max d[(i),(j)]\); the working example correctly selects the
-   **minimum** matrix entry. This package implements **min-of-\(D\)** to choose
+   $d[(r),(s)]=\max d[(i),(j)]$; the working example correctly selects the
+   **minimum** matrix entry. This package implements **min-of-$D$** to choose
    the merge, and **max** when updating.)
-3. \(m:=m+1\); merge into clustering \(m\); set \(L(m)=d[(r),(s)]\).
-4. Update the matrix: delete rows/cols of \(r,s\); set new distances
-   \(d[(r,s),k]=\max(d[k,r],d[k,s])\).
+3. $m:=m+1$; merge into clustering $m$; set $L(m)=d[(r),(s)]$.
+4. Update the matrix: delete rows/cols of $r,s$; set new distances
+   $d[(r,s),k]=\max(d[k,r],d[k,s])$.
 5. Stop when one cluster remains; otherwise go to step 2.
 
-Defays (1977) **CLINK** is an optimally efficient \(O(n^2)\) scheme analogous
+Defays (1977) **CLINK** is an optimally efficient $O(n^2)$ scheme analogous
 to SLINK for single linkage; this package teaches the clear naive method.
 
 ## Contrast with single linkage
 
 | | Single linkage | Complete linkage |
 | --- | --- | --- |
-| \(D(X,Y)\) | \(\min\) pairwise | \(\max\) pairwise |
-| Update | \(\min\{d[k,r],d[k,s]\}\) | \(\max\{d[k,r],d[k,s]\}\) |
+| $D(X,Y)$ | $\min$ pairwise | $\max$ pairwise |
+| Update | $\min\{d[k,r],d[k,s]\}$ | $\max\{d[k,r],d[k,s]\}$ |
 | Tendency | Long thin **chains** | **Compact** equal-diameter blobs |
 | Sibling package | `ada-single-linkage-clustering` | this repo |
 
@@ -72,10 +72,10 @@ to SLINK for single linkage; this package teaches the clear naive method.
 | Tree | `Merge_Record`, `Dendrogram`, `Hierarchy_Result` | Merge history |
 | Flat | `Labels`, `Parameters` | Partitions / cut height |
 | Geometry | `Euclidean_Distance`, `Build_Distance_Matrix` | L2 and pairwise matrix |
-| Linkage | `Complete_Linkage_Distance`, `Cluster_Distance` | \(D(X,Y)=\max\) |
+| Linkage | `Complete_Linkage_Distance`, `Cluster_Distance` | $D(X,Y)=\max$ |
 | Run | `Run_Complete_Linkage` (points **or** matrix) | Full dendrogram |
 | Query | `Merge_Height` | Height of merge step |
-| Cut | `Cut_Dendrogram`, `Labels_At_Height` | \(K\)-cut / height threshold |
+| Cut | `Cut_Dendrogram`, `Labels_At_Height` | $K$-cut / height threshold |
 
 Named exceptions: `Invalid_Argument`, `Capacity_Exceeded`.
 
@@ -84,7 +84,7 @@ carry `Pre` / `Post` / `Global` where meaningful (`SPARK_Mode => Off`).
 
 ## Working example (Wikipedia bacteria JC69)
 
-Five bacteria \(a..e\) distance matrix:
+Five bacteria $a..e$ distance matrix:
 
 |   | a | b | c | d | e |
 |---|---|---|---|---|---|
@@ -96,13 +96,13 @@ Five bacteria \(a..e\) distance matrix:
 
 Verified merge sequence (complete linkage):
 
-1. \(a{+}b\) at height **17**; updated \(D\) to \(c,d,e\) = \(\max\) → 30, 34, 23
-2. \((ab){+}e\) at height **23**
-3. \(c{+}d\) at height **28**
-4. \(((ab)e){+}(cd)\) at height **43**
+1. $a{+}b$ at height **17**; updated $D$ to $c,d,e$ = $\max$ → 30, 34, 23
+2. $(ab){+}e$ at height **23**
+3. $c{+}d$ at height **28**
+4. $((ab)e){+}(cd)$ at height **43**
 
 (Same JC69 matrix under single linkage yields a different tree — first merge
-still \(a{+}b@17\), then chaining via min updates.)
+still $a{+}b@17$, then chaining via min updates.)
 
 ## Build and test
 
