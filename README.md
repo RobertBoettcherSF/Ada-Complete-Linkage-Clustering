@@ -25,18 +25,17 @@ Part of the **RobertBoettcherSF** Ada algorithm series. Sibling:
 | **Flat cut** | By \(K\) clusters **or** height threshold | `Cut_Dendrogram` / `Labels_At_Height` |
 | **Complexity** | Naive \(O(n^3)\); CLINK \(O(n^2)\) known | Educational; \(n\le 64\) |
 
-## Formula
+##Formula
 
-\[
+$$
 D(X,Y)=\max_{x\in X,\,y\in Y} d(x,y).
-\]
+$$
 
-After merging clusters \((r)\) and \((s)\), distances to any remaining cluster
-\((k)\) update by
+After merging clusters $(r)$ and $(s)$, distances to any remaining cluster $(k)$ update by
 
-\[
+$$
 d[(r,s),(k)]=\max\bigl\{d[(k),(r)],\,d[(k),(s)]\bigr\}.
-\]
+$$
 
 ## Naive algorithm (corrected merge choice)
 
