@@ -28,15 +28,14 @@ Part of the **RobertBoettcherSF** Ada algorithm series. Sibling:
 ## Formula
 
 $$
-D(X,Y)=\max_{x\in X,\,y\in Y} d(x,y).
+D(X,Y) = \max_{x \in X, \, y \in Y} d(x,y).
 $$
 
 After merging clusters $(r)$ and $(s)$, distances to any remaining cluster $(k)$ update by
 
 $$
-d[(r,s),(k)] = \max \left\{ d[(k),(r)],\, d[(k),(s)] \right\}.
+d[(r,s),(k)] = \max \{ d[(k),(r)], \, d[(k),(s)] \}.
 $$
-
 ## Naive algorithm (corrected merge choice)
 
 1. Start with \(N\) singleton clusters, \(L(0)=0\), \(m=0\); build the
